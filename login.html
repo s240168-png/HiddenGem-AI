@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HiddenGemsAI | Ratnagiri Portal & Login</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/maximalist.css">
+</head>
+<body>
+  <div class="app-shell portal-shell">
+    <div class="folk-pattern top-pattern"></div>
+    <div class="marigold marigold-one">✿</div>
+    <div class="marigold marigold-two">✿</div>
+
+    <header class="portal-header">
+      <a class="brand" href="login.html"><span class="gem">◆</span><span>HiddenGems<span>AI</span></span></a>
+    </header>
+
+    <main class="portal-hero">
+      <p class="eyebrow">✦ AI LOCAL CONCIERGE · RATNAGIRI</p>
+      <h1>Welcome to <em>HiddenGemsAI</em></h1>
+      <p>Explore the unspoiled coastal wonders of Ratnagiri, Maharashtra, or power your local business storefront.</p>
+      <div id="active-session-banner" style="display:none;margin-top:16px;"></div>
+    </main>
+
+    <!-- Email Verification Status Banner & Action Area -->
+    <div id="email-verify-banner" class="dev-verify-banner" style="display:none;">
+      <div class="dev-verify-header">
+        <span class="dev-verify-badge" id="verify-badge-title">ACCOUNT VERIFICATION</span>
+        <h3 id="verify-heading">Email Verification</h3>
+      </div>
+      <div class="dev-verify-content">
+        <p id="verify-status-text">Processing email verification...</p>
+        <div id="resend-email-wrap" style="display:none;margin-top:12px;">
+          <form id="resend-verification-form" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+            <input type="email" id="resend-email-input" placeholder="Enter your email address" required style="padding:8px 12px;border:1px solid #ccc;border-radius:6px;flex:1;min-width:200px;">
+            <button type="submit" class="btn-dev-verify" id="btn-resend-email">✦ Resend verification link</button>
+          </form>
+        </div>
+      </div>
+      <div class="dev-verify-actions">
+        <button type="button" class="btn-close-verify" id="btn-close-verify">Dismiss</button>
+      </div>
+    </div>
+
+    <section class="portal-grid">
+      <!-- Traveler Portal Card -->
+      <article class="portal-card traveler">
+        <div class="portal-icon">🧭</div>
+        <h2>Traveler</h2>
+        <p>Discover Ratnagiri's forts, beaches, and local artisans. Build personalized itineraries matched to your free time.</p>
+
+        <div class="portal-tabs">
+          <button type="button" class="active" data-tab="login">Log In</button>
+          <button type="button" data-tab="register">Create Account</button>
+        </div>
+
+        <form id="traveler-login-form" class="portal-form login-form">
+          <label>Email address
+            <input type="email" name="email" placeholder="traveler@example.com" required autocomplete="email">
+          </label>
+          <label>Password
+            <input type="password" name="password" placeholder="••••••••" required autocomplete="current-password">
+          </label>
+          <button class="portal-submit" type="submit">Log in as Traveler →</button>
+        </form>
+
+        <form id="traveler-register-form" class="portal-form register-form" style="display:none;">
+          <label>Your full name
+            <input type="text" name="name" placeholder="Priya Sharma" required autocomplete="name">
+          </label>
+          <label>Email address
+            <input type="email" name="email" placeholder="traveler@example.com" required autocomplete="email">
+          </label>
+          <label>Password <span style="font-weight:normal;color:#7a8e97;font-size:10px;">(min. 6 chars)</span>
+            <input type="password" name="password" placeholder="••••••••" minlength="6" required autocomplete="new-password">
+          </label>
+          <button class="portal-submit" type="submit">Create Traveler Account →</button>
+        </form>
+
+        <div class="auth-message"></div>
+      </article>
+
+      <!-- Merchant Portal Card -->
+      <article class="portal-card merchant">
+        <div class="portal-icon">🏪</div>
+        <h2>Merchant</h2>
+        <p>Manage your storefront, broadcast real-time flash offers, and connect with active travelers wandering Ratnagiri.</p>
+
+        <div class="portal-tabs">
+          <button type="button" class="active" data-tab="login">Log In</button>
+          <button type="button" data-tab="register">Create Account</button>
+        </div>
+
+        <form id="merchant-login-form" class="portal-form login-form">
+          <label>Business email address
+            <input type="email" name="email" placeholder="merchant@ratnagiricrafts.in" required autocomplete="email">
+          </label>
+          <label>Password
+            <input type="password" name="password" placeholder="••••••••" required autocomplete="current-password">
+          </label>
+          <button class="portal-submit" type="submit">Log in as Merchant →</button>
+        </form>
+
+        <form id="merchant-register-form" class="portal-form register-form" style="display:none;">
+          <label>Business / Studio name
+            <input type="text" name="businessName" placeholder="Ratnagiri Alphonso & Craft Studio" required autocomplete="organization">
+          </label>
+          <label>Business email address
+            <input type="email" name="email" placeholder="merchant@ratnagiricrafts.in" required autocomplete="email">
+          </label>
+          <label>Phone number
+            <input type="text" name="phone" placeholder="+91 98765 43210" required autocomplete="tel">
+          </label>
+          <label>Business address
+            <input type="text" name="address" placeholder="123 Coast Road, Ratnagiri" required autocomplete="street-address">
+          </label>
+          <div style="display:flex;gap:8px;">
+            <label style="flex:1">Latitude
+              <input type="number" step="any" name="latitude" placeholder="16.9902" required>
+            </label>
+            <label style="flex:1">Longitude
+              <input type="number" step="any" name="longitude" placeholder="73.3120" required>
+            </label>
+          </div>
+          <label>Password <span style="font-weight:normal;color:#7a8e97;font-size:10px;">(min. 6 chars)</span>
+            <input type="password" name="password" placeholder="••••••••" minlength="6" required autocomplete="new-password">
+          </label>
+          <button class="portal-submit" type="submit">Create Merchant Account →</button>
+        </form>
+
+        <div class="auth-message"></div>
+      </article>
+    </section>
+  </div>
+
+  <script src="js/auth.js"></script>
+</body>
+</html>

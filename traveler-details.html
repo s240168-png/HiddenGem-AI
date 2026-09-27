@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HiddenGemsAI | Traveler details</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/maximalist.css">
+</head>
+<body>
+  <div class="app-shell portal-shell">
+    <div class="folk-pattern top-pattern"></div>
+    <div class="marigold marigold-one">✿</div>
+    <div class="marigold marigold-two">✿</div>
+
+    <header class="portal-header">
+      <a class="brand" href="login.html"><span class="gem">◆</span><span>HiddenGems<span>AI</span></span></a>
+    </header>
+
+    <main class="portal-hero">
+      <p class="eyebrow">✦ TELL US ABOUT YOU</p>
+      <h1>Let's tailor <em>your</em> afternoon</h1>
+      <p>A couple of quick details help us curate the right hidden gems for you.</p>
+    </main>
+
+    <section class="detail-wrap">
+      <a class="detail-back" href="login.html">← Back to portal</a>
+      <form id="traveler-form" class="offer-form glass">
+        <label>Your name <span class="detail-note">(optional)</span>
+          <input name="name" placeholder="e.g. Priya" autocomplete="given-name">
+        </label>
+
+        <label>Where are you exploring?
+          <input name="location" placeholder="e.g. Ratnagiri, Maharashtra" value="Ratnagiri, Maharashtra" autocomplete="off">
+        </label>
+
+        <div>
+          <div class="control-label">◷ Available time <b id="hours-value">2.5 hrs</b></div>
+          <input id="hours" type="range" min="1" max="8" step="0.5" value="2.5" style="width:100%">
+          <div class="range-labels"><span>1 hr</span><span>8 hrs</span></div>
+        </div>
+
+        <div>
+          <div class="control-label">Who's exploring?</div>
+          <div class="vibe-chips" id="group-size">
+            <button type="button" class="selected" data-group="Solo">Solo</button>
+            <button type="button" data-group="Couple">Couple</button>
+            <button type="button" data-group="Friends">Friends</button>
+            <button type="button" data-group="Family">Family</button>
+          </div>
+        </div>
+
+        <label>Start time
+          <input id="start-time" name="startTime" type="time" value="09:00">
+        </label>
+
+        <div>
+          <div class="control-label">Weather condition</div>
+          <div class="vibe-chips" id="weather-choice">
+            <button type="button" class="selected" data-weather="clear">Clear</button>
+            <button type="button" data-weather="rainy">Rainy</button>
+          </div>
+        </div>
+
+        <div>
+          <div class="control-label">Your budget</div>
+          <div class="budget-buttons" id="budget-buttons"></div>
+        </div>
+
+        <div>
+          <div class="control-label">What's your vibe? <span class="detail-note">(pick a few)</span></div>
+          <div class="vibe-chips" id="vibe-chips"></div>
+        </div>
+
+        <button class="broadcast" type="submit">✦ Find my hidden gems →</button>
+      </form>
+    </section>
+  </div>
+  <script src="js/traveler-details.js"></script>
+</body>
+</html>

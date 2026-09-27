@@ -1,0 +1,6 @@
+flask
+sentence-transformers>=6.1.0
+scikit-learn
+numpy
+pandas
+gunicorn

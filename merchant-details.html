@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HiddenGemsAI | Business details</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/maximalist.css">
+</head>
+<body>
+  <div class="app-shell portal-shell">
+    <div class="folk-pattern top-pattern"></div>
+    <div class="marigold marigold-one">✿</div>
+    <div class="marigold marigold-two">✿</div>
+
+    <header class="portal-header">
+      <a class="brand" href="login.html"><span class="gem">◆</span><span>HiddenGems<span>AI</span></span></a>
+    </header>
+
+    <main class="portal-hero">
+      <p class="eyebrow">⚡ SET UP YOUR STOREFRONT</p>
+      <h1>Tell us about <em>your</em> business</h1>
+      <p>A few details help nearby travelers discover you at the right moment.</p>
+    </main>
+
+    <section class="detail-wrap">
+      <a class="detail-back" href="login.html">← Back to portal</a>
+      <form id="merchant-form" class="offer-form glass">
+        <label>Business name
+          <input name="businessName" placeholder="e.g. Kalaghar Studio" autocomplete="organization">
+        </label>
+
+        <label>Location / area
+          <input name="location" placeholder="e.g. Ratnagiri, Maharashtra" value="Ratnagiri, Maharashtra" autocomplete="off">
+        </label>
+
+        <div>
+          <div class="control-label">What best describes you?</div>
+          <div class="vibe-chips" id="category-chips"></div>
+        </div>
+
+        <label>Contact number <span class="detail-note">(optional)</span>
+          <input name="contact" type="tel" placeholder="e.g. 98765 43210" autocomplete="tel">
+        </label>
+
+        <label>Typical opening hours <span class="detail-note">(optional)</span>
+          <input name="hours" placeholder="e.g. 10 AM – 9 PM">
+        </label>
+
+        <button class="broadcast" type="submit">⚡ Set up my dashboard →</button>
+      </form>
+    </section>
+  </div>
+  <script src="js/merchant-details.js"></script>
+</body>
+</html>

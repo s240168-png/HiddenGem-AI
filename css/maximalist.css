@@ -1,0 +1,285 @@
+/* The maximalist visual layer & Auth UI extensions */
+
+.portal-tabs {
+  display: flex;
+  background: #fff4db;
+  border: 1.5px solid #173748;
+  border-radius: 8px;
+  padding: 3px;
+  margin-bottom: 18px;
+  gap: 4px;
+}
+
+.portal-tabs button {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: #517079;
+  font: 700 11px Manrope, sans-serif;
+  padding: 7px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.portal-tabs button.active {
+  background: #173748;
+  color: #fff4db;
+}
+
+.portal-card.traveler .portal-tabs button.active {
+  background: #ef5a36;
+  color: #fff9ec;
+}
+
+.portal-card.merchant .portal-tabs button.active {
+  background: #147c89;
+  color: #fff9ec;
+}
+
+.portal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.portal-form label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #173748;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.portal-form input {
+  padding: 9px 11px;
+  background: #fff4db;
+  color: #173748;
+  border: 1.5px solid #17374880;
+  border-radius: 6px;
+  font: inherit;
+  font-size: 12px;
+}
+
+.portal-form input:focus {
+  outline: none;
+  border-color: #d9367b;
+  box-shadow: 0 0 0 2px #d9367b33;
+}
+
+.portal-submit {
+  margin-top: 6px;
+  border: 2px solid #173748;
+  color: #fff9e9;
+  padding: 11px 16px;
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 #173748;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.portal-card.traveler .portal-submit {
+  background: #ef5a36;
+}
+
+.portal-card.merchant .portal-submit {
+  background: #147c89;
+}
+
+.portal-submit:hover:not(:disabled) {
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0 #173748;
+}
+
+.portal-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.auth-message {
+  margin-top: 10px;
+  padding: 9px 12px;
+  border-radius: 7px;
+  font-size: 11.5px;
+  line-height: 1.4;
+  border: 1.5px solid #173748;
+  display: none;
+}
+
+.auth-message.error {
+  display: block;
+  background: #ffd9d9;
+  color: #7b1717;
+  border-color: #d9367b;
+}
+
+.auth-message.success {
+  display: block;
+  background: #bce4d5;
+  color: #0f4f46;
+  border-color: #147c89;
+}
+
+/* Development verification modal/banner */
+.dev-verify-banner {
+  background: #fff9ec;
+  border: 2px solid #173748;
+  box-shadow: 5px 5px 0 #f9b52b;
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin: 0 auto 30px;
+  max-width: 920px;
+  position: relative;
+  z-index: 5;
+}
+
+.dev-verify-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.dev-verify-badge {
+  background: #f9b52b;
+  color: #173748;
+  font: 700 10px 'DM Mono', monospace;
+  padding: 3px 8px;
+  border-radius: 99px;
+  border: 1px solid #173748;
+}
+
+.dev-verify-banner h3 {
+  margin: 0;
+  font-size: 14px;
+  color: #173748;
+}
+
+.dev-verify-content {
+  font-size: 12px;
+  color: #42606a;
+  line-height: 1.6;
+}
+
+.dev-verify-token {
+  font-family: 'DM Mono', monospace;
+  background: #fff4db;
+  padding: 4px 8px;
+  border-radius: 5px;
+  border: 1px solid #17374844;
+  color: #d9367b;
+  font-weight: 700;
+  display: inline-block;
+  margin: 4px 0;
+  word-break: break-all;
+}
+
+.dev-verify-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.btn-dev-verify {
+  border: 1.5px solid #173748;
+  background: #147c89;
+  color: #fff9e9;
+  font: 800 11px Manrope, sans-serif;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 #173748;
+}
+
+.btn-dev-verify:hover {
+  background: #0e5b65;
+}
+
+.btn-close-verify {
+  border: 1.5px solid #17374880;
+  background: #fff4db;
+  color: #173748;
+  font: 700 11px Manrope, sans-serif;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* User topbar pill */
+.user-profile-pill {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: #fff9ec;
+  border: 1.5px solid #173748;
+  padding: 4px 10px 4px 12px;
+  border-radius: 99px;
+  box-shadow: 2px 2px 0 #173748;
+  font: 700 11px Manrope, sans-serif;
+  color: #173748;
+}
+
+.user-profile-pill .user-role {
+  font: 700 9px 'DM Mono', monospace;
+  background: #bce4d5;
+  color: #147c89;
+  padding: 2px 6px;
+  border-radius: 99px;
+  text-transform: uppercase;
+}
+
+.btn-logout {
+  background: #ef5a36;
+  color: #fff9ec;
+  border: 1px solid #173748;
+  border-radius: 99px;
+  padding: 3px 8px;
+  font: 700 10px Manrope, sans-serif;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.btn-logout:hover {
+  transform: scale(1.05);
+  background: #d9367b;
+}
+.landing-nav-login{margin-left:auto;color:#173748;font:700 12px Manrope;text-decoration:none;border:1.5px solid #173748;border-radius:9px;padding:9px 14px;box-shadow:2px 2px 0 #173748;background:#fff8e9}
+.landing-nav-login:hover{transform:translate(1px,1px);box-shadow:1px 1px 0 #173748}
+.landing-hero{position:relative;z-index:1;padding:78px 0 26px;text-align:center;max-width:680px;margin:0 auto}
+.landing-hero h1{font-size:clamp(38px,5vw,64px);letter-spacing:-3px;line-height:1.06;margin:14px 0 0;font-weight:800;color:#173748}
+.landing-hero h1 em{font-family:'Playfair Display';font-weight:600;color:#d9367b;text-shadow:1px 1px 0 #f9b52b;font-style:normal}
+.landing-hero .subtitle{max-width:520px;margin:18px auto 0;text-align:center}
+.landing-cta-row{display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:28px}
+.landing-secondary-link{color:#42606a;font:700 12px Manrope;text-decoration:underline}
+.landing-features{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:1040px;margin:20px auto 60px}
+.landing-feature{padding:24px 22px}
+.landing-feature-icon{width:44px;height:44px;border-radius:11px;background:#f9b52b;border:2px solid #173748;display:grid;place-items:center;font-size:20px;margin-bottom:14px}
+.landing-feature h3{margin:0 0 8px;font-size:16px;letter-spacing:-.4px;color:#173748}
+.landing-feature p{margin:0;color:#42606a;font-size:12.5px;line-height:1.7}
+.landing-footer{position:relative;z-index:1;text-align:center;padding:20px 0 40px;color:#7a8e97;font-size:11px}
+.landing-footer span{color:#d9367b}
+@media(max-width:850px){.landing-features{grid-template-columns:1fr}}
+.portal-card-highlighted{box-shadow:9px 9px 0 #ef5a36;transform:translate(-2px,-3px);border-color:#d9367b}
+.portal-card-dimmed{opacity:.55}
+/* Real interactive map (Leaflet + OpenStreetMap) inside the existing .map-panel frame */
+#leaflet-map{position:absolute;inset:0;z-index:0;background:#d9eadb}
+.map-panel .map-header{pointer-events:none}
+.map-panel .map-header button{pointer-events:auto}
+.map-brand{pointer-events:none}
+.hg-marker-pin{width:29px;height:29px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:grid;place-items:center;color:#fff;background:#ef5a36;border:2px solid #173748;box-shadow:2px 2px 0 #173748;font:700 11px Manrope}
+.hg-marker-pin span{transform:rotate(45deg)}
+.hg-marker-pin.hg-marker-itinerary{background:#d9367b}
+.hg-marker-user{width:16px;height:16px;border-radius:50%;background:#6274fa;border:3px solid #fff;box-shadow:0 0 0 5px #657bff77}
+.hg-popup h4{margin:0 0 4px;font:700 13px Manrope;color:#173748}
+.hg-popup p{margin:0 0 8px;font:11px 'DM Mono';color:#52707b}
+.hg-popup button{border:1.5px solid #173748;background:#f9b52b;color:#173748;border-radius:7px;padding:6px 10px;font:800 10px Manrope;cursor:pointer;box-shadow:2px 2px 0 #173748}
+.hg-popup button.hg-popup-added{background:#bce4d5;border-color:#147c89}
