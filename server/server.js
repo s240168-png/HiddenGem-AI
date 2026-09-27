@@ -22,7 +22,7 @@ const { getPublicMerchants } = require('./controllers/merchantController');
 const { getPublicMerchantExperiences } = require('./controllers/experienceController');
 
 const app = express();
-const port = env.PORT;
+const port = process.env.PORT || 3000;
 
 app.locals.readOffers = readOffers;
 app.locals.weatherCondition = 'clear';
@@ -123,7 +123,7 @@ async function start() {
   try {
     await connectDB();
     console.log('MongoDB connected successfully');
-    app.listen(port, () => console.log(`Server running on http://localhost:${port}`));
+    app.listen(port, '0.0.0.0', () => console.log(`Server running on http://0.0.0.0:${port}`));
   } catch (error) {
     console.error('MongoDB connection failed:', error.message);
     process.exitCode = 1;
