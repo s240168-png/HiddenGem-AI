@@ -112,7 +112,7 @@ app.innerHTML = `
               </select>
             </label>
             
-            <button class="broadcast" type="submit" style="width: 100%; padding: 1rem; background: var(--brand-pop); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1.1rem; margin-top: 1rem;">⚡ Broadcast Offer</button>
+            <button class="broadcast" type="submit" style="width: 100%; padding: 1rem; background: var(--brand-pop); color: black; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1.1rem; margin-top: 1rem;">⚡ Broadcast Offer</button>
           </form>
 
           <div class="glass" style="padding: 2rem; border-radius: 16px;">
