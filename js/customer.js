@@ -121,7 +121,8 @@ function card(item, index) {
   const shortDescription = description.length > 120 ? `${description.slice(0, 117)}...` : description;
   const price = item.cost != null ? `₹${item.cost}` : item.budget || 'Price varies';
   const duration = item.duration || (item.duration_hours ? `${item.duration_hours} hours` : 'Duration varies');
-  return `<article class="experience-card" style="--delay:${index * 70}ms"><div class="card-image">${imageMarkup}<div class="image-fallback" ${fallbackVisibility} style="position:absolute;inset:0;z-index:1;display:${fallbackDisplay};align-items:center;justify-content:center;background:#f1d9ba;color:#173748;font:700 11px Manrope">Image unavailable</div><div class="auth-badge">★ ${item.verified === true ? 'Verified gem' : '95% authentic'}</div><button class="save" aria-label="Save ${escapeHtml(name)}">＋</button></div><div class="card-body"><p class="category">${escapeHtml(category)}</p><h3>${escapeHtml(name)}</h3><p class="experience-description">${escapeHtml(shortDescription)}</p><div class="meta"><span>⌖ ${escapeHtml(location)}</span><span>◷ ${escapeHtml(duration)}</span><span>${escapeHtml(price)}</span></div><p class="experience-vibes">${itemVibes.map(escapeHtml).join(' · ')}</p><div class="fit"><div><span>AI feasibility</span><b>${item.fit}% fit</b></div><div class="progress"><i style="width:${item.fit}%"></i></div></div><button class="action map-action" data-map-view="${item.id}">View on Map</button><button class="action ${added ? 'added' : ''}" data-add="${item.id}">${added ? '✓ Added to route' : 'Add to itinerary ＋'}</button></div></article>`;
+  const offerBadge = (item.merchantOffer && item.merchantOffer > 0) ? `<div style="position:absolute;top:10px;right:10px;background:#ef5a36;color:white;padding:4px 8px;font-weight:bold;border-radius:4px;z-index:2;font-size:12px;box-shadow:0 2px 4px rgba(0,0,0,0.2);">🔥 ${item.merchantOffer}% OFF!</div>` : '';
+  return `<article class="experience-card" style="--delay:${index * 70}ms; position:relative;"><div class="card-image">${offerBadge}${imageMarkup}<div class="image-fallback" ${fallbackVisibility} style="position:absolute;inset:0;z-index:1;display:${fallbackDisplay};align-items:center;justify-content:center;background:#f1d9ba;color:#173748;font:700 11px Manrope">Image unavailable</div><div class="auth-badge">★ ${item.verified === true ? 'Verified gem' : '95% authentic'}</div><button class="save" aria-label="Save ${escapeHtml(name)}">＋</button></div><div class="card-body"><p class="category">${escapeHtml(category)}</p><h3>${escapeHtml(name)}</h3><p class="experience-description">${escapeHtml(shortDescription)}</p><div class="meta"><span>⌖ ${escapeHtml(location)}</span><span>◷ ${escapeHtml(duration)}</span><span>${escapeHtml(price)}</span></div><p class="experience-vibes">${itemVibes.map(escapeHtml).join(' · ')}</p><div class="fit"><div><span>AI feasibility</span><b>${item.fit}% fit</b></div><div class="progress"><i style="width:${item.fit}%"></i></div></div><button class="action map-action" data-map-view="${item.id}">View on Map</button><button class="action ${added ? 'added' : ''}" data-add="${item.id}">${added ? '✓ Added to route' : 'Add to itinerary ＋'}</button></div></article>`;
 }
 function map(experiences) {
   return `<div class="map-panel"><div id="leaflet-map"></div><div class="map-header"><span>⌖ LIVE DISCOVERY MAP · RATNAGIRI</span><button>♧ 186 exploring Ratnagiri</button></div><div class="map-brand">HiddenGems<span>AI</span></div></div>`;
@@ -235,11 +236,16 @@ function renderLeafletMap(experiences) {
     }
   }).catch(e => console.error('Failed to load merchants for map', e));
 
-  if (boundsPoints.length > 1) {
-    map.fitBounds(boundsPoints, { padding: [28, 28] });
-  } else if (boundsPoints.length === 1) {
-    map.setView(boundsPoints[0], 14);
-  }
+  setTimeout(() => {
+    if (map) {
+      map.invalidateSize();
+      if (boundsPoints.length > 1) {
+        map.fitBounds(boundsPoints, { padding: [30, 30] });
+      } else if (boundsPoints.length === 1) {
+        map.setView(boundsPoints[0], 14);
+      }
+    }
+  }, 50);
 
   // Event delegation: popup buttons are injected as raw HTML, so wire clicks once on the container.
   container.addEventListener('click', event => {
@@ -260,7 +266,8 @@ function updateItinerary(experiences) {
   const items = state.itinerary.map(id => experiences.find(item => item.id === id) || initialExperiences.find(item => item.id === id)).filter(Boolean);
   const used = items.reduce((total, item) => total + parseInt(item.duration, 10) + parseInt(item.travel, 10), 0);
   const remaining = Math.max(state.hours * 60 - used, 0);
-  return `<aside class="itinerary glass"><div class="itinerary-top"><div><p class="eyebrow">⚡ YOUR MICRO-ITINERARY</p><h2>Afternoon of small wonders</h2></div><button aria-label="Collapse itinerary">⌄</button></div><div class="route-progress"><div><span>${Math.floor(used / 60)} hrs ${used % 60} mins used · ${Math.floor(remaining / 60)} hrs ${remaining % 60} mins left</span><b>of ${state.hours} hrs</b></div><div class="progress"><i style="width:${Math.min(used / (state.hours * 60) * 100, 100)}%"></i></div></div><div class="timeline">${items.map((item, index) => `<div class="timeline-item"><div class="step"><span>${index + 1}</span>${index < items.length - 1 ? '<i></i>' : ''}</div><div><p>${item.duration} · ${item.travel}</p><h3>${item.title} <button class="remove-stop" data-remove="${item.id}" aria-label="Remove ${item.title}">×</button></h3><small>${item.kind}</small></div></div>`).join('')}</div><div class="itinerary-footer"><div><span>Total value</span><b>$${items.length ? items.length * 18 + 14 : 0}</b></div><button>Book all & save ↗</button></div></aside>`;
+  const totalCost = items.reduce((total, item) => total + (Number(item.cost) || 0), 0);
+  return `<aside class="itinerary glass"><div class="itinerary-top"><div><p class="eyebrow">⚡ YOUR MICRO-ITINERARY</p><h2>Afternoon of small wonders</h2></div><button aria-label="Collapse itinerary">⌄</button></div><div class="route-progress"><div><span>${Math.floor(used / 60)} hrs ${used % 60} mins used · ${Math.floor(remaining / 60)} hrs ${remaining % 60} mins left</span><b>of ${state.hours} hrs</b></div><div class="progress"><i style="width:${Math.min(used / (state.hours * 60) * 100, 100)}%"></i></div></div><div class="timeline">${items.map((item, index) => `<div class="timeline-item"><div class="step"><span>${index + 1}</span>${index < items.length - 1 ? '<i></i>' : ''}</div><div><p>${item.duration} · ${item.travel}</p><h3>${item.title || item.name} <button class="remove-stop" data-remove="${item.id}" aria-label="Remove ${item.title || item.name}">×</button></h3><small>${item.kind || item.category}</small></div></div>`).join('')}</div><div class="itinerary-footer"><div><span>Total value</span><b>₹${totalCost}</b></div><button>Book all & save ↗</button></div></aside>`;
 }
 function calculateFeasibility(experience, preferences) {
   const budgetLevels = { '$': 1, '$$': 2, '$$$': 3 };
@@ -282,9 +289,9 @@ function getScoredExperiences(source) {
 }
 function render(source) {
   const experiences = getScoredExperiences(source);
-  app.innerHTML = `<div class="app-shell"><div class="folk-pattern top-pattern"></div><div class="folk-pattern side-pattern"></div><div class="marigold marigold-one">✿</div><div class="marigold marigold-two">✿</div>${header()}<header class="hero"><div><p class="eyebrow">✦ AI LOCAL CONCIERGE</p><h1>${state.name ? `Hi ${state.name}, your` : 'Your'} time is short.<br><em>Make it unforgettable.</em></h1><p class="subtitle">We find the little places that turn a free afternoon into a story worth keeping.</p><div class="hand-painted-note">Made for happy wandering <span>✦</span></div></div><div class="hero-art" aria-hidden="true"><div class="hero-sun">☼</div><div class="hero-flower f-one">✿</div><div class="hero-flower f-two">❋</div><div class="hero-flower f-three">✽</div><p>Ghoomo<br>Phiro</p></div><button class="generate">✦ Generate my route ↗</button></header><section class="control-bar glass"><div class="time-control"><div class="control-label">◷ Available time <b id="hours-value">${state.hours} hrs</b></div><input id="hours" type="range" min="1" max="8" step="0.5" value="${state.hours}"><div class="range-labels"><span>1 hr</span><span>8 hrs</span></div></div><div class="divider"></div><div class="budget-control"><div class="control-label">Your budget</div><div class="budget-buttons">${['$', '$$', '$$$'].map(value => `<button class="${state.budget === value ? 'selected' : ''}" data-budget="${value}">${value}</button>`).join('')}</div></div><div class="divider"></div><div class="vibe-control"><div class="control-label">What’s your vibe?</div><div class="vibe-chips">${vibes.map(vibe => `<button class="${state.chosenVibes.includes(vibe) ? 'selected' : ''}" data-vibe="${vibe}">${state.chosenVibes.includes(vibe) ? '✓ ' : ''}${vibe}</button>`).join('')}</div></div></section><main class="content">
-
-<section class="discover" style="margin-bottom: 2rem;" id="local-offers-section" hidden>
+  app.innerHTML = `<div class="app-shell"><div class="folk-pattern top-pattern"></div><div class="folk-pattern side-pattern"></div><div class="marigold marigold-one">✿</div><div class="marigold marigold-two">✿</div>${header()}<header class="hero"><div><p class="eyebrow">✦ AI LOCAL CONCIERGE</p><h1>${state.name ? `Hi ${state.name}, your` : 'Your'} time is short.<br><em>Make it unforgettable.</em></h1><p class="subtitle">We find the little places that turn a free afternoon into a story worth keeping.</p><div class="hand-painted-note">Made for happy wandering <span>✦</span></div></div><div class="hero-art" aria-hidden="true"><div class="hero-sun">☼</div><div class="hero-flower f-one">✿</div><div class="hero-flower f-two">❋</div><div class="hero-flower f-three">✽</div><p>Ghoomo<br>Phiro</p></div><button class="generate">✦ Generate my route ↗</button></header><section class="control-bar glass" style="flex-direction: column; align-items: stretch; gap: 16px;"><div style="display: flex; flex-wrap: wrap; gap: 18px; align-items: center; justify-content: center; width: 100%;"><div class="vibe-control"><div class="control-label">Where are you exploring?</div><input id="location" value="${escapeHtml(state.location)}" style="background: #fff4db; color: #173748; border: 1px solid #17374880; padding: 4px 8px; border-radius: 6px; font: inherit; width: 100%;"></div><div class="divider"></div><div class="time-control"><div class="control-label">◷ Available time <b id="hours-value">${state.hours} hrs</b></div><input id="hours" type="range" min="1" max="8" step="0.5" value="${state.hours}"><div class="range-labels"><span>1 hr</span><span>8 hrs</span></div></div><div class="divider"></div><div class="vibe-control"><div class="control-label">Who's exploring?</div><div class="vibe-chips" id="group-size">${Object.keys(groupSizes).map(group => `<button class="${state.groupSize === groupSizes[group] ? 'selected' : ''}" data-group="${group}">${group}</button>`).join('')}</div></div><div class="divider"></div><div class="vibe-control"><div class="control-label">Start time</div><input id="start-time" type="time" value="${state.startTime}" style="background: #fff4db; color: #173748; border: 1px solid #17374880; padding: 4px 8px; border-radius: 6px; font: inherit;"></div><div class="divider"></div><div class="vibe-control"><div class="control-label">Weather</div><div class="vibe-chips" id="weather-choice"><button class="${!state.rain ? 'selected' : ''}" data-weather="clear">Clear</button><button class="${state.rain ? 'selected' : ''}" data-weather="rainy">Rainy</button></div></div><div class="divider"></div><div class="budget-control"><div class="control-label">Your budget</div><div class="budget-buttons">${['$', '$$', '$$$'].map(value => `<button class="${state.budget === value ? 'selected' : ''}" data-budget="${value}">${value}</button>`).join('')}</div></div></div><div style="border-top: 1px dashed #17374844; padding-top: 14px;"><div class="control-label" style="justify-content: center; margin-bottom: 12px; font-size: 11px;">What’s your vibe?</div><div class="vibe-chips" style="justify-content: center;">${vibes.map(vibe => `<button class="${state.chosenVibes.includes(vibe) ? 'selected' : ''}" data-vibe="${vibe}">${state.chosenVibes.includes(vibe) ? '✓ ' : ''}${vibe}</button>`).join('')}</div></div><div class="map-container-top" style="margin-top: 30px; margin-bottom: 10px;">${map(experiences)}</div><main class="content">
+<div class="main-column" style="display: flex; flex-direction: column; gap: 2rem;">
+<section class="discover" id="local-offers-section" hidden>
   <div class="section-head">
     <div>
       <p class="eyebrow" style="color: var(--brand-pop);">🔥 LOCAL OFFERS</p>
@@ -304,10 +311,10 @@ function render(source) {
     </div>
     <button class="text-button">See all gems ↗</button>
   </div>
-  <div class="feed-grid">${map(experiences)}<div class="cards-grid">${experiences.map(card).join('')}</div></div>
+  <div class="cards-grid">${experiences.map(card).join('')}</div>
 </section>
 
-<section class="discover" style="margin-top: 2rem;" id="local-merchants-section" hidden>
+<section class="discover" id="local-merchants-section" hidden>
   <div class="section-head">
     <div>
       <p class="eyebrow">LOCAL MERCHANTS</p>
@@ -319,7 +326,7 @@ function render(source) {
   </div>
 </section>
 
-<section class="discover" style="margin-top: 2rem;" id="my-bookings-section">
+<section class="discover" id="my-bookings-section">
   <div class="section-head">
     <div>
       <p class="eyebrow" style="color: var(--brand-pop);">YOUR RESERVATIONS</p>
@@ -330,7 +337,7 @@ function render(source) {
     <p style="color: var(--text-light); font-style: italic;">Loading your bookings...</p>
   </div>
 </section>
-
+</div>
 ${updateItinerary(experiences)}</main></div>`;
   initializeIcons(app);
   app.querySelectorAll('[data-experience-image]').forEach(image => {
@@ -644,7 +651,11 @@ function bindEvents() {
     document.querySelector('.route-progress b').textContent = `of ${state.hours} hrs`;
     document.querySelector('.route-progress .progress i').style.width = `${Math.min(used / capacity * 100, 100)}%`;
   };
-  document.querySelectorAll('[data-budget]').forEach(button => button.onclick = () => { state.budget = button.dataset.budget; render(); });
+  document.querySelector('#location').onchange = event => { state.location = event.target.value; render(); };
+  document.querySelector('#start-time').onchange = event => { state.startTime = event.target.value; render(); };
+  document.querySelectorAll('[data-group]').forEach(button => button.onclick = () => { state.groupSize = groupSizes[button.dataset.group]; render(); });
+  document.querySelectorAll('[data-weather]').forEach(button => button.onclick = () => { state.rain = button.dataset.weather === 'rainy'; render(); });
+  document.querySelectorAll('[data-budget]').forEach(button => button.onclick = () => { state.budget = button.dataset.budget; state.budgetLimit = budgetLimits[button.dataset.budget]; render(); });
   document.querySelectorAll('[data-vibe]').forEach(button => button.onclick = () => { state.chosenVibes = state.chosenVibes.includes(button.dataset.vibe) ? state.chosenVibes.filter(vibe => vibe !== button.dataset.vibe) : [...state.chosenVibes, button.dataset.vibe]; render(); });
   document.querySelectorAll('[data-add]').forEach(button => button.onclick = () => addToItinerary(Number(button.dataset.add), button));
   document.querySelectorAll('[data-map-view]').forEach(button => button.onclick = () => focusExperienceOnMap(button.dataset.mapView));
@@ -691,6 +702,11 @@ function bindEvents() {
     timeline.hidden = !timeline.hidden;
     event.currentTarget.setAttribute('aria-expanded', String(!timeline.hidden));
   };
+  window.addEventListener('resize', () => {
+    if (leafletMapInstance) {
+      leafletMapInstance.invalidateSize();
+    }
+  });
 }
 function showAlert(message) { document.querySelectorAll('.weather-alert').forEach(alert => alert.remove()); const alert = document.createElement('div'); alert.className = 'weather-alert'; const title = message || (state.rain ? 'Weather alert: Rain expected in 15 mins' : 'Route restored: Clear skies ahead'); const detail = message ? 'Your itinerary and recommendations stay synced with your current selections.' : (state.rain ? 'AI is replacing your outdoor walk with a nearby covered artisan market.' : 'Your original outdoor discoveries are back on the route.'); alert.innerHTML = `<div class="alert-icon">☂</div><div><strong>${title}</strong><p>${detail}</p></div><button aria-label="Close">×</button>`; document.body.append(alert); initializeIcons(alert); alert.querySelector('button').onclick = () => alert.remove(); setTimeout(() => alert.remove(), 5000); }
 let lastOffersString = '';
@@ -719,6 +735,8 @@ async function loadLiveData() {
       if (newOffersString !== lastOffersString) {
         lastOffersString = newOffersString;
         renderOffers(offers);
+        // Refresh the main recommendations to apply the new discount badges immediately
+        generateRoute();
       }
     }
     
@@ -935,3 +953,85 @@ async function initializeCustomer() {
   startLivePolling();
 }
 initializeCustomer();
+
+
+// --- Nugen Chatbot Widget Integration ---
+function initChatWidget() {
+  const widgetHtml = `
+    <div id="hg-chat-widget">
+      <div id="hg-chat-window">
+        <div class="chat-header">
+          <div><span style="color:#f9b52b;">?</span> AI Concierge</div>
+          <button id="hg-chat-close">?</button>
+        </div>
+        <div id="hg-chat-messages">
+          <div class="chat-msg bot">Namaskar! I am your local Ratnagiri concierge. How can I help you discover hidden gems today?</div>
+        </div>
+        <div class="typing-indicator" id="hg-chat-typing">Concierge is typing...</div>
+        <form class="chat-input-area" id="hg-chat-form">
+          <input type="text" id="hg-chat-input" placeholder="Ask about Ratnagiri..." autocomplete="off" required>
+          <button type="submit" id="hg-chat-send">Send</button>
+        </form>
+      </div>
+      <button id="hg-chat-toggle" title="Chat with AI Concierge">?</button>
+    </div>
+  `;
+  document.body.insertAdjacentHTML("beforeend", widgetHtml);
+
+  const toggleBtn = document.getElementById("hg-chat-toggle");
+  const closeBtn = document.getElementById("hg-chat-close");
+  const chatWindow = document.getElementById("hg-chat-window");
+  const chatForm = document.getElementById("hg-chat-form");
+  const chatInput = document.getElementById("hg-chat-input");
+  const chatMessages = document.getElementById("hg-chat-messages");
+  const typingIndicator = document.getElementById("hg-chat-typing");
+
+  toggleBtn.addEventListener("click", () => {
+    chatWindow.style.display = chatWindow.style.display === "flex" ? "none" : "flex";
+    if (chatWindow.style.display === "flex") chatInput.focus();
+  });
+
+  closeBtn.addEventListener("click", () => chatWindow.style.display = "none");
+
+  chatForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const msg = chatInput.value.trim();
+    if (!msg) return;
+    
+    // Add User Message
+    chatMessages.insertAdjacentHTML("beforeend", `<div class="chat-msg user">${escapeHtml(msg)}</div>`);
+    chatInput.value = "";
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    
+    // Show typing
+    typingIndicator.style.display = "block";
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    try {
+      const res = await requestJson("/chat", { success: false, message: "Chat failed" }, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: msg, context: state.itinerary })
+      });
+      
+      typingIndicator.style.display = "none";
+      if (res.success && res.data && res.data.reply) {
+        chatMessages.insertAdjacentHTML("beforeend", `<div class="chat-msg bot">${escapeHtml(res.data.reply)}</div>`);
+      } else {
+        chatMessages.insertAdjacentHTML("beforeend", `<div class="chat-msg bot" style="background:#ef5a36;color:#fff;">Sorry, I am having trouble connecting to Nugen right now.</div>`);
+      }
+    } catch (err) {
+      typingIndicator.style.display = "none";
+      chatMessages.insertAdjacentHTML("beforeend", `<div class="chat-msg bot" style="background:#ef5a36;color:#fff;">Network error. Please try again later.</div>`);
+    }
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  });
+}
+
+// Initialize chat widget once on load
+document.addEventListener("DOMContentLoaded", () => {
+  if (!document.getElementById("hg-chat-widget")) {
+    initChatWidget();
+  }
+});
+

@@ -15,6 +15,7 @@ const weatherRoutes = require('./routes/weatherRoutes');
 const recommendationRoutes = require('./routes/recommendationRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
 const merchantRoutes = require('./routes/merchantRoutes');
+const chatRoutes = require('./routes/chatRoutes');
 const { requirePageAuth } = require('./middleware/authMiddleware');
 const { connectDB } = require('./db/connection');
 const { getPublicMerchants } = require('./controllers/merchantController');
@@ -79,6 +80,7 @@ app.use('/api/weather', weatherRoutes);
 app.use('/api/recommendations', recommendationRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/merchant', merchantRoutes);
+app.use('/api/chat', chatRoutes);
 
 // Public landing page (no auth required)
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, '..', 'landing.html')));

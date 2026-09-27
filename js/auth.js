@@ -343,14 +343,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
-      } catch (err) {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Create Merchant Account →';
-        showMessage(card, 'error', 'Unable to connect to server. Please try again.');
-      }
-    });
-  }
-
   // Check if currently authenticated
   async function checkSession() {
     try {

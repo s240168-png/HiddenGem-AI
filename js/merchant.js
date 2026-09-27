@@ -518,6 +518,12 @@ function setupAuthHandlers() {
   }
 }
 
+window.addEventListener('resize', () => {
+  if (typeof merchantMapInstance !== 'undefined' && merchantMapInstance) {
+    merchantMapInstance.invalidateSize();
+  }
+});
+
 initializeMerchant();
 
 async function broadcastOffer(offer) {
@@ -542,7 +548,7 @@ async function loadMerchantData() {
       if (experiences.length === 0) {
         select.innerHTML = '<option value="">No experiences found</option>';
       } else {
-        select.innerHTML = experiences.map(e => `<option value="${e.id}">${e.name} (${e.vibes.join(', ')})</option>`).join('');
+        select.innerHTML = experiences.map(e => `<option value="${e.id}">${e.name} (${Array.isArray(e.vibes) ? e.vibes.join(', ') : (e.vibes || e.vibe || '')})</option>`).join('');
       }
     }
     return experiences;
@@ -570,7 +576,7 @@ async function loadActiveOffer() {
         listEl.innerHTML = myOffers.map(offer => `
           <div style="border: 1px solid var(--border); padding: 1rem; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; background: #fff;">
             <div>
-              <h4 style="margin: 0; color: var(--brand-pop);">${offer.title}</h4>
+              <h4 style="margin: 0; color: var(--brand-pop);">${offer.discount}% OFF</h4>
               <p style="margin: 0.2rem 0 0; font-size: 0.9rem;">${offer.experience?.name || 'All Experiences'} • ${offer.targetVibe}</p>
               <p style="margin: 0; font-size: 0.8rem; color: var(--text-light);">Expires: ${new Date(offer.expiresAt).toLocaleTimeString()}</p>
             </div>
@@ -607,7 +613,6 @@ async function loadAnalytics() {
     });
   } catch (error) {
     console.error('Unable to load analytics', error);
-    offerStatus.textContent = error.message || 'Unable to load live analytics. Please try again.';
   }
 }
 

@@ -228,23 +228,18 @@ def predict():
             departure_time = arrival_time + timedelta(hours=cand_duration)
             time_slot = f"{arrival_time.strftime('%I:%M %p')} - {departure_time.strftime('%I:%M %p')}"
             
-            itinerary.append({
-                "id": best_candidate.get("id"),
+            best_candidate_copy = dict(best_candidate)
+            best_candidate_copy.update({
                 "timeSlot": time_slot,
                 "placeName": best_candidate.get("name") or best_candidate.get("title") or "Unknown",
                 "dlVibeMatch": round(best_candidate.get("vibe_score", 0), 1),
                 "cost": cost,
-                "description": best_candidate.get("description", ""),
-                "duration_hours": best_candidate.get("duration_hours"),
                 "distance": f"{round(best_distance, 1)} km",
-                "image": best_candidate.get("image", ""),
-                "kind": best_candidate.get("kind", ""),
                 "fit": round(best_candidate.get("vibe_score", 0), 1),
                 "match": round(best_candidate.get("vibe_score", 0), 1),
-                "duration": best_candidate.get("duration", ""),
                 "travel": f"{int(best_travel_time * 60)} min",
-                "budget": best_candidate.get("budget", "$")
             })
+            itinerary.append(best_candidate_copy)
             
             current_time = departure_time
             coords = get_coords(best_candidate)
