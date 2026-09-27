@@ -2240,5 +2240,52 @@
     "image_alt": "Shri Devi Bhagwati Mandir in Ratnagiri, Maharashtra",
     "featuredInClear": true,
     "verified": true
+  },
+  {
+    "id": 51,
+    "name": "Mirya drive sunset point",
+    "title": "Mirya drive sunset point",
+    "kind": "Sunset Point ",
+    "category": "Solo & Quiet",
+    "location": "Ratnagiri, Maharashtra, India",
+    "area": "Coastal Strip",
+    "description": "Hidden coastal road view location",
+    "cost": 0,
+    "budget": "$",
+    "duration_hours": 1,
+    "duration": "30 min",
+    "travel": "9 min drive",
+    "distance": "2.6 km away",
+    "vibe": [
+      "Solo & Quiet",
+      "Romantic",
+      "Hidden gem"
+    ],
+    "vibes": [
+      "Solo & Quiet",
+      "Romantic",
+      "Hidden gem"
+    ],
+    "raw_vibes": "culture temple spirituality heritage traditional local history",
+    "weather_type": "outdoor",
+    "weather": "outdoor",
+    "indoor": false,
+    "rainSafe": false,
+    "venueStatus": "open",
+    "merchantOffer": 15,
+    "max_group_size": 20,
+    "latitude": 17.02517,
+    "longitude": 73.27,
+    "lat": 17.02517,
+    "lon":  73.27,
+    "score": 89,
+    "match": 98,
+    "pin": "K",
+    "image": "https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=900&q=80",
+    "image_url": "https://www.google.com/search?tbm=isch&q=Bhagwati%20Temple%20Ratnadurg%20Ratnagiri",
+    "image_source": "Web image search",
+    "image_alt": "Shri Devi Bhagwati Mandir in Ratnagiri, Maharashtra",
+    "featuredInClear": true,
+    "verified": true
   }
 ]
